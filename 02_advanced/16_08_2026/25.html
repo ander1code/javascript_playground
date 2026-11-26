@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>25.html</title>
+</head>
+<body>
+	<!--
+		25 - Crie uma função exercise_25 que demonstre requisições HTTP assíncronas no 
+		navegador através de três rotinas: a API tradicional XMLHttpRequest (xmlhttprequest_exec), 
+		a moderna API Fetch baseada em Promises (fetch_exec), e a 
+		abordagem com Async/Await (async_await_exec), abordando métodos GET/POST, 
+		prevenção de cache, tratamento de erros e restrições de ambiente 
+		(como a ausência nativa do XMLHttpRequest no Node.js).
+	-->
+	<script>
+
+		function xmlhttp_execution(){
+
+			function get(){
+				let xmlhttp = new XMLHttpRequest();
+
+				xmlhttp.onreadystatechange = function(){
+					if(this.readyState === 4){
+						if(this.status === 200){
+
+							let people = JSON.parse(this.responseText);
+
+							console.log(`PEOPLE LIST:`);
+							for(let d of people){
+								console.log(`- ID: ${d.id}, Name: ${d.name}`);
+							}
+						}
+						else{
+							console.log(`Error: ${this.status}, ${this.statusText}.`);
+						}
+					}
+				};
+
+				xmlhttp.timeout = 5000;
+				xmlhttp.ontimeout = () => console.log("Timeout!");
+				xmlhttp.onerror = () => console.log("Error!");
+
+				xmlhttp.open("GET", "people.json", true);
+				xmlhttp.send();
+			}
+
+			function post(){
+				let xmlhttp = new XMLHttpRequest();
+
+				xmlhttp.onreadystatechange = function(){
+					if(this.readyState === 4){
+						if(this.status === 200){
+							console.log("Successfully created.");
+							get();
+						}
+						else{
+							console.log(`Error: ${this.status}, ${this.statusText}.`);
+						}
+					}
+				};
+
+				xmlhttp.timeout = 5000;
+				xmlhttp.ontimeout = () => console.log("Timeout!");
+				xmlhttp.onerror = () => console.log("Error!");
+
+				xmlhttp.open("POST", "people.json", true);
+
+				let person = {
+					id: 999, 
+					name: "Unknown"
+				};
+
+				xmlhttp.setRequestHeader("Content-type", "application/json;charset=utf-8;");
+				xmlhttp.send(JSON.stringify(person));
+			}
+
+			post();
+		}
+
+		function fetch_execution(){
+
+			function get(){
+				fetch("people.json", {
+					method: "GET",
+				}).then((response) => {
+					if(!response.ok){
+						throw new Error("Error!");
+					}
+					return response.json();
+				}).then((data) => {
+					console.log(`PEOPLE LIST:`);
+					for(let d of data){
+						console.log(`- ID: ${d.id}, Name: ${d.name}`);
+					}
+				}).catch((error) => {
+					console.log(error);
+				});
+			}
+
+			function post(){
+				let person = {
+					id: 999, 
+					name: "Unknown"
+				};
+				fetch("people.json", {
+					method: "POST",
+					body: JSON.stringify(person),
+					headers: {"Content-type": "application/json;charset=utf-8;"},
+				}).then((response) => {
+					if(!response.ok){
+						throw new Error("Error!");
+					}
+					return response.json();
+				}).then((data) => {
+					console.log(`Successfully created!`);
+					get();
+				}).catch((error) => {
+					console.log(error);
+				});
+			}
+
+			post();
+		}
+
+		function async_await_execution(){
+			async function get(){
+				try{
+					let response = await fetch("people.json", {
+						method: "GET",
+					});
+
+					if(!response.ok){
+						throw new Error("Error!");
+					}
+					
+					let data = await response.json();
+
+					console.log(`PEOPLE LIST:`);
+					for(let d of data){
+						console.log(`- ID: ${d.id}, Name: ${d.name}`);
+					}
+				}catch(error){
+					console.log(`${error.name}, ${error.message}`);	
+				}
+			}
+
+			async function post(){
+
+				try{
+					let person = {
+						id: 999, 
+						name: "Unknown"
+					};
+
+					let response = await fetch("people.json", {
+						method: "POST",
+						body: JSON.stringify(person),
+						headers: {"Content-type": "application/json;charset=utf-8;"},
+					});
+
+					if(!response.ok){
+						throw new Error("Error!");
+					}
+
+					console.log(`Successfully created!`);
+					get();
+
+				}catch(error){
+					console.log(`${error.name}, ${error.message}`);	
+				}
+			}
+
+			post();
+		}
+
+		xmlhttp_execution();
+
+		fetch_execution();
+
+		async_await_execution();
+	</script>
+</body>
+</html>

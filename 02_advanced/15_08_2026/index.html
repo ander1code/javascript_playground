@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>JS Advanced!</title>
+</head>
+<body>
+	<!-- 
+		O XMLHttpRequest é uma API específica dos navegadores (DOM). Como o Node.js roda 
+		fora do navegador (no servidor), o objeto XMLHttpRequest não existe nativamente 
+		no ambiente global dele.
+		
+		ver as possibilidade de se rodar no node;
+		
+		os exemplos, serao feitos via browser;
+	-->
+
+	<div id="container">
+		<div id="div_people"></div>
+	</div>
+
+	<script>
+
+		function xmlhttprequest_exec(){
+
+				function get(){
+
+				const xmlhttp = new XMLHttpRequest();
+
+				let div = document.querySelector("#div_people");
+
+				xmlhttp.onreadystatechange = function(){
+					if(this.readyState === 4){
+						if(this.status === 200){
+							div.textContent = this.responseText;
+						}else{
+							console.log("loading error.");
+						}
+					}
+				}
+
+				xmlhttp.timeout = 5000;
+				xmlhttp.ontimeout = () => console.log("timeout!");
+				xmlhttp.onerror = () => console.log("operation error!");
+
+				//	três argumentos principais:
+
+				//		"GET" (Método HTTP): Define que o objetivo da requisição 
+				//		é buscar dados do servidor, sem modificá-los. É o método 
+				//		padrão para leitura de recursos.
+
+				//		A URL (people.json?_=${new Date().getTime()}): O endereço 
+				//		do recurso que você deseja buscar, mas com um detalhe 
+				//		crucial no final.
+
+				//		true (Modo Assíncrono): É o terceiro argumento (muitas 
+				//		vezes omitido porque true já é o padrão). Ele instrui 
+				//		o navegador a executar a requisição em segundo plano, 
+				//		permitindo que o restante do código continue rodando 
+				//		sem travar a interface da página enquanto a resposta 
+				//		não chega.
+				
+				let link = `people.json?_=${new Date().getTime()}`;
+				console.log(link);
+
+				xmlhttp.open("GET", link, true);
+				xmlhttp.send();
+			}
+			
+
+			function set(){
+
+				const xmlhttp = new XMLHttpRequest();
+
+				// tratamento de eventos:
+
+				xmlhttp.onreadystatechange = function(){
+					if(this.readyState === 4){
+						if(this.status === 200){
+							console.log("Successfully created.");
+							get(); // getting
+						}else{
+							console.log("creating error.");
+						}
+					}
+				}
+
+				xmlhttp.timeout = 5000;
+				xmlhttp.ontimeout = () => console.log("timeout!");
+				xmlhttp.onerror = () => console.log("operation error!");
+
+				// data to inclusion:
+
+				const data = {
+					id: 777,
+					name: "Person 01",
+				};
+
+				xmlhttp.open("POST", "people.json", true);
+				xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8;");
+				xmlhttp.send(JSON.stringify(data));
+			}
+
+			set();
+		}
+		
+		function fetch_exec(){
+
+			function get(){
+
+				fetch("people.json")
+				.then((response) => {
+					if(!response.ok)
+						throw new Error(`Getting error: ${response.status}.`);
+					return response.json();
+				})
+				.then((data) => {
+					for(let d of data){
+						console.log(d);
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+			}
+
+			function set(){
+
+				let data = {
+					id: 999,
+					name: "Person 01"
+				};
+
+				fetch("people.json", {
+					method: "POST",
+					headers: {"Content-type": "application/json;charset=utf-8"},
+					body: JSON.stringify(data),
+				})
+				.then((response) => {
+
+					if(!response.ok){
+						throw new Error(`Posting error: ${response.status}.`);
+					}
+
+					return response.json();
+				})
+				.then((data) => {
+
+					console.log("Successfully created.");
+					
+					get();
+
+				})
+				.catch((error) => {
+					
+					console.log(error)
+					
+					console.log(error.name); // getting name error.
+
+					// tratando erros:
+
+					//	switch (erro.name) {
+				    //  	case 'TimeoutError':
+				    //			break;
+				    
+				    //  	case 'AbortError':
+				    //			break;
+
+				    //  	case 'TypeError':
+				    //   		break;
+
+				    //  	default:
+				    //    		console.error('Erro inesperado:', erro.message);
+				    //    		break;
+				});
+			}
+
+			set();
+		}
+
+		function async_await_exec(){
+
+			async function get(){
+
+				try{
+					const response = await fetch("people.json");
+
+					if(!response.ok){
+						throw new Error(`Getting data error: ${response.status}.`);
+					}
+
+					const data = await response.json();
+
+					for(let d of data){
+						console.log(d);
+					}
+
+				}catch(error){
+					console.log(error);
+
+					//if (error.name === 'TimeoutError') {
+		            //    console.log('Timeout: A requisição demorou muito para responder.');
+		            //} else if (error.name === 'TypeError') {
+		            //    console.log('Erro de rede: Falha de conexão ou arquivo não encontrado.');
+		            //} else {
+		            //    console.log('Erro geral:', error.message);
+		            //}
+				}
+			}
+
+			async function set(){
+
+				try{
+
+					const person = {
+						id:999,
+						name: "Person 01"
+					}
+
+					const response = await fetch("people.json", {
+						headers: {"Content-type": "application/json;charset=UTF-8"},
+						async: true,
+						method: "POST",
+						body: JSON.stringify(person)
+					});
+
+					if(!response.ok){
+						throw new Error(`Posting data error: ${response.status}.`);
+					}
+
+					console.log("Successfully created.");
+
+					get();
+
+				}catch(error){
+					console.log(`${error.name}: ${error.message}`);
+				}
+			}
+			set();
+		}
+
+		// xmlhttprequest_exec();
+		// fetch_exec();
+		//async_await_exec();
+	</script>
+</body>
+</html>

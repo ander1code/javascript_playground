@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>17.html</title>
+
+	<style>
+    	.square {
+	        background-color: green;
+	        width: 500px;
+	        height: 500px;
+	        border: 3px solid black;
+	        border-radius: 7px;
+	        margin-left: 31%;
+	        margin-top: 6%;
+	        position: relative;
+	    }
+	</style>
+		
+</head>
+<body>
+	<!--
+		/*
+			17 - Demonstre a estilização de elementos 
+			do DOM selecionando-os com `querySelector`, aplicando múltiplos estilos de 
+			uma vez via atribuição direta de string (`.style`) no primeiro elemento, 
+			e estilizando propriedades individuais em notação `camelCase` 
+			(como `backgroundColor`, `borderRadius`, etc.) no segundo 
+			elemento.
+		*/
+	-->
+
+	<div id="square" class="square">
+	</div>
+
+	
+	<script>
+		let square = document.querySelector("#square");
+		square.style.cursor = "text";
+
+		square.addEventListener("mouseenter", function() {
+		    square.classList.remove("square");
+		    
+		    // Aplicando os estilos via JavaScript
+		    square.style.backgroundColor = "red";
+		    square.style.width = "500px";
+		    square.style.height = "500px";
+		    square.style.border = "3px solid black";
+		    square.style.borderRadius = "7px";
+		    square.style.marginLeft = "31%";
+		    square.style.marginTop = "6%";
+		    square.style.position = "relative";
+		});
+
+		square.addEventListener("mouseleave", function() {
+		    // Remove os estilos inline aplicados no hover
+		    square.removeAttribute("style");
+		    
+		    // Restaura o cursor e a classe original
+		    square.style.cursor = "text";
+		    square.classList.add("square");
+		});
+
+	</script>
+</body>
+</html>

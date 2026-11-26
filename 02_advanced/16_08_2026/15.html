@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>15</title>
+	<style>
+		p{
+			font-size:25px;
+		}
+	</style>
+</head>
+<body>
+	<!--
+		15 - Crie uma função exercise_15 que simule ou utilize a manipulação do DOM selecionando elementos via document.getElementById(), demonstre a diferença 
+		entre textContent (para textos puros e seguros) e innerHTML (para injeção e renderização de tags HTML).
+	-->
+
+	<p id="p1"></p>
+	<p id="p2"></p>
+
+	<script>
+		let p1 = document.getElementById('p1');
+		p1.textContent = "<b><u><i>Hello, World!</i></u></b>";
+
+		let p2 = document.getElementById('p2');
+		p2.innerHTML = "<b><u><i>Hello, World!</i></u></b>";
+	</script>
+</body>
+</html>

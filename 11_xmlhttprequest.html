@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teste XMLHttpRequest</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ccc;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        pre {
+            background: #222;
+            color: #00ff90;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            min-height: 100px;
+        }
+
+        .status {
+            margin: 15px 0;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Teste XMLHttpRequest</h1>
+
+        <p>
+            Clique no botão para executar a requisição
+            ao arquivo people.json.
+        </p>
+
+        <button onclick="xmlhttprequest_demo()">
+            Executar requisição
+        </button>
+
+        <div class="status" id="status">
+            Aguardando execução...
+        </div>
+
+        <h3>Resultado:</h3>
+
+        <pre id="resultado">Nenhuma requisição realizada.</pre>
+
+    </div>
+
+
+    <script>
+
+        /**********************************************************************/
+        /* XMLHttpRequest                                                    */
+        /**********************************************************************/
+
+        function xmlhttprequest_demo() {
+
+            const resultado = document.getElementById("resultado");
+            const status = document.getElementById("status");
+
+            resultado.textContent = "Carregando...";
+            status.textContent = "Realizando requisição...";
+
+
+            function getAll(resource) {
+
+                return new Promise((resolve, reject) => {
+
+                    const request = new XMLHttpRequest();
+
+
+                    request.addEventListener(
+                        "readystatechange",
+                        () => {
+
+                            if (request.readyState !== 4) {
+                                return;
+                            }
+
+
+                            if (request.status === 200) {
+
+                                resolve(
+                                    request.responseText
+                                );
+
+                            } else {
+
+                                reject(
+                                    new Error(
+                                        `HTTP Error: ${request.status}`
+                                    )
+                                );
+                            }
+                        }
+                    );
+
+
+                    request.addEventListener(
+                        "error",
+                        () => {
+                            reject(
+                                new Error("Network error")
+                            );
+                        }
+                    );
+
+
+                    request.timeout = 5000;
+
+
+                    request.addEventListener(
+                        "timeout",
+                        () => {
+                            reject(
+                                new Error("Request timeout")
+                            );
+                        }
+                    );
+
+
+                    request.open(
+                        "GET",
+                        "http://127.0.0.1/exercicios_js/people.json"
+                    );
+
+                    request.send();
+
+                });
+
+            }
+
+
+            async function main() {
+
+                try {
+
+                    const data = await getAll(
+                        "http://127.0.0.1/exercicios_js/people.json"
+                    );
+
+                    console.log(data);
+
+                    const people = JSON.parse(data);
+
+                    console.log(people);
+
+
+                    resultado.textContent =
+                        JSON.stringify(people, null, 4);
+
+                    status.textContent = "Requisição realizada com sucesso!";
+
+                } catch (error) {
+
+                    console.log(error);
+
+                    resultado.textContent = error.message;
+
+                    status.textContent = "Erro na requisição!";
+
+                }
+
+            }
+
+
+            main();
+
+        }
+
+    </script>
+
+</body>
+
+</html>

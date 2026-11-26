@@ -1,0 +1,1 @@
+A collection of JavaScript studies and practical projects covering programming fundamentals, advanced concepts, object-oriented programming, serialization, file handling, iterators, generators, lazy evaluation, modules, and asynchronous programming. Includes hands-on exercises, HTML integration, Web APIs, and CommonJS/ES Modules examples.

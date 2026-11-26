@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>24.html</title>
+</head>
+<body>
+	<script type="module">
+		
+		/*
+			24 - Demonstre o carregamento de 
+			Módulos ECMAScript (ESM) no navegador, abordando restrições de CORS 
+			ao usar o protocolo file://, a necessidade de um 
+			servidor local (http:// ou https://), o uso obrigatório do atributo 
+			type="module", o isolamento de escopo e boas práticas de extensão e 
+			gerenciamento de cache.
+		*/
+
+		try
+		{
+			const { greeting } = require("./modules/module-cjs.js");
+			console.log(greeting);
+		}
+		catch(error)
+		{
+			console.log(`${error.name}: ${error.message}`);
+		}
+
+
+		import { greeting } from "./modules/module-ecs.js";
+		console.log(greeting("Anderson"));
+
+	</script>
+</body>
+</html>

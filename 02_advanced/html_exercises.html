@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<!--
+	/*
+	15 - Crie uma função que simule ou utilize a manipulação do DOM 
+	selecionando elementos via document.getElementById(), demonstre a diferença 
+	entre textContent (para textos puros e seguros) e innerHTML (para injeção e 
+	renderização de tags HTML).
+	*/
+	-->
+
+	<div id="15">
+		<div id="div-text1"></div>
+		<div id="div-text2"></div>
+
+		<script type="text/javascript">
+			
+			let div1 = document.getElementById("div-text1");
+			div1.textContent = "<h1>Hello, World!</h1>";
+
+			let div2 = document.getElementById("div-text2");
+			div2.innerHTML = "<h1>Hello, World!</h1>";
+
+		</script>
+	</div>
+
+	<!--
+	/*
+	16 - Crie uma função que demonstre a manipulação avançada do DOM, 
+	utilizando querySelector e querySelectorAll, alterando estilos 
+	e propriedades de botões, manipulando classes CSS (add, remove, contains, 
+	toggle, className), iterando sobre NodeList com for...of, e associando 
+	eventos como o onclick.
+	*/
+	-->
+
+	<div id="16">
+		<div id="div1">
+			<button type="button" id="btn1" name="btn1">CLICK</button>
+		</div>
+		<br><br><br>
+
+		<div id="div2" class="div-buttons">
+			<button type="button" id="btn2" name="btn2">CLICK</button>	
+			<button type="button" id="btn3" name="btn3">CLICK</button>	
+			<button type="button" id="btn4" name="btn4">CLICK</button>			
+		</div>
+
+		<br><br><br>
+
+		<div id="div3">
+			<button type="button" id="btn5" name="btn5">CLICK</button>
+		</div>
+		
+
+		<style>
+			button{
+				color: white;
+				width: 200px;
+				height: 70px;
+				cursor: pointer;
+				border: 2px solid black;
+			}
+
+			.btn-success{
+				background-color: green;
+				
+			}
+
+			.btn-danger{
+				background-color: red;
+			}
+
+			.btn-alert{
+				background-color: blue;
+			}
+
+			.div-buttons{
+				border: 10px solid black;
+				width: 200px;
+			}
+
+		</style>
+
+
+		<script type="text/javascript">
+
+			let btn1 = document.querySelector("#btn1");
+
+			btn1.classList.add("btn-success");
+			btn1.textContent = "GREEN";
+			
+			btn1.addEventListener("click", () =>{
+				if(btn1.classList.contains("btn-success")){
+					btn1.classList.remove("btn-success");
+					btn1.textContent = "RED";
+					btn1.classList.add("btn-danger");
+
+				}else{
+					btn1.classList.remove("btn-danger");
+					btn1.textContent = "GREEN";
+					btn1.classList.add("btn-success")
+				}
+			});
+
+			// listing all buttons:
+			let buttons = document.querySelectorAll("#div2 > button");
+			for(let button of buttons){
+				button.classList.add("btn-alert");
+				button.addEventListener("click", () => {
+					alert(`Alert: ${button.name}`);
+				});
+			}
+
+
+			let btn5 = document.querySelector("#btn5");
+
+			//btn5.classList.add("btn-success");
+
+			btn5.className = "btn-success";
+			btn5.textContent = "CLICK";
+			
+			/*
+			btn5.addEventListener("click", () =>{
+				btn5.classList.toggle("btn-danger");
+			});
+			*/
+
+			btn5.onclick = () => {
+				btn5.classList.toggle("btn-danger");
+			};
+
+		</script>
+	</div>
+
+
+	<!--
+	/*
+	17 - Crie uma função que demonstre a estilização de elementos 
+	do DOM selecionando-os com `querySelector`, aplicando múltiplos estilos de 
+	uma vez via atribuição direta de string (`.style`) no primeiro elemento, 
+	e estilizando propriedades individuais em notação `camelCase` 
+	(como `backgroundColor`, `borderRadius`, etc.) no segundo 
+	elemento.
+	*/
+	-->
+
+	<div id="17">
+		
+		<div id="div-17">
+			<button type="button" id="btn1" name="btn1">CLICK</button>
+			<br><br>
+			<button type="button" id="btn2" name="btn2">CLICK</button>
+		</div>
+		
+		<script type="text/javascript">
+
+			let button1 = document.querySelector("#div-17 > #btn1");
+			button1.style = "color:white; width:200px; height:70px; cursor:pointer; border:2px solid black; background-color:red; border-radius:7px;";
+
+			let button2 = document.querySelector("#div-17 > #btn2");
+			button2.style.color = "white"; 
+			button2.style.width = "200px"; 
+			button2.style.height = "70px"; 
+			button2.style.cursor = "pointer"; 
+			button2.style.border = "2px solid black"; 
+			button2.style.backgroundColor = "black";
+			button2.style.borderRadius = "7px";
+		</script>
+	</div>
+
+	<!--
+	/*
+	18 - Crie uma função que demonstre a criação dinâmica de nós no 
+	DOM utilizando querySelectorAll, createElement, appendChild, manipulação de 
+	atributos com setAttribute e removeAttribute, além de estilizá-los e 
+	aninhá-los em diferentes linhas do documento.
+	*/
+	-->
+
+	<div id="18">
+
+		<div id="div-18"></div>
+
+		<script type="text/javascript">
+		
+			let colors = ["red", "blue", "orange", "black", "magenta", "gray", "brown", "green", "#FFFAAF", "#BBBFFF"];
+			let div_container = document.getElementById("div-18");
+
+			for(let i = 0; i < 10; i++){
+				let element = document.createElement("button");
+				element.style = `color:white; width:200px; height:60px; cursor:pointer; background-color:${colors[i]};`;
+				element.setAttribute("data-attribute", "attribute" + i);
+				element.setAttribute("id", i);
+				element.textContent = "Button 0" + i;
+				element.removeAttribute("data-attribute");
+				div_container.appendChild(element);
+				div_container.appendChild(document.createElement("br"));
+
+			}
+
+			let buttons3 = document.querySelectorAll("button");
+
+		    for (let button of buttons3) {
+		        button.addEventListener("click", () => {
+		            alert(`Alert: Button 0${button.id}!`);
+		        });
+		    }
+		</script>
+	</div>
+
+	<!--
+	/*
+	19 - Crie uma função que demonstre o uso de Data Attributes 
+	(data-*) e da propriedade .dataset no DOM, criando atributos personalizados 
+	via .setAttribute(), lendo-os via notação de ponto, e iterando sobre suas 
+	chaves e valores com Object.entries() e Object.values().
+	*/
+	-->
+
+	<div id="19">
+		
+		<div id="div-19">
+			<button type="button" style="width:200px; height:60px; background-color:green; color:white; font-weight:bold;">CLICK</button><br>
+			<button type="button" style="width:200px; height:60px; background-color:red; color:white; font-weight:bold;">CLICK</button><br>
+			<button type="button" style="width:200px; height:60px; background-color:blue; color:white; font-weight:bold;">CLICK</button><br>
+		</div>
+
+		<script>
+			let i = 0;
+			let buttons4 = document.querySelectorAll("#div-19 > button");
+			console.log(buttons4);
+			for(let button of buttons4){
+				button.setAttribute("data-attribute", `data-attr0${i}`);
+				i++;
+			}
+
+			for(let button of buttons4){
+				for(let[k,v] of Object.entries(button.dataset)){
+					console.log(`${k}: ${v}`);
+				}
+
+				for(let v of Object.values(button.dataset)){
+					console.log(v);
+				}
+			}
+
+		</script>
+	</div>
+
+	<!-- FEITO POR IA
+	/*
+	20 - Crie uma função que demonstre a manipulação de eventos no
+	DOM comparando a propriedade .onclick com o método .addEventListener(),
+	implemente eventos de mouse (mouseenter e mouseleave) para alternar classes
+	de estado em um elemento (.inactive e .active), controle estados dinâmicos
+	em botões, e utilize temporizadores (setTimeout e setInterval) para disparar
+	eventos de forma programática.
+	*/
+	-->
+
+	<div id="20">
+
+    	<style>
+
+        .inactive {
+            width: 400px;
+            height: 400px;
+            background-color: red;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        .active {
+            width: 600px;
+            height: 600px;
+            background-color: lightgreen;
+            border: 5px solid black;
+            cursor: pointer;
+        }
+
+        #btn_update,
+        #btn_timeout,
+        #btn_interval,
+        #btn_stop {
+            width: 200px;
+            height: 50px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+    	</style>
+
+    	<div id="div-20">
+
+        <!-- Elemento que terá seu estado alterado pelo mouse -->
+        <div class="inactive" id="square"></div>
+
+        <br>
+
+        <!-- Botão para controlar o estado -->
+        <button type="button" id="btn_update" data-enable="false">
+            enable
+        </button>
+
+        <br>
+
+        <!-- Botão para demonstrar setTimeout -->
+        <button type="button" id="btn_timeout">
+            setTimeout
+        </button>
+
+        <br>
+
+        <!-- Botão para iniciar setInterval -->
+        <button type="button" id="btn_interval">
+            iniciar setInterval
+        </button>
+
+        <br>
+
+        <!-- Botão para parar setInterval -->
+        <button type="button" id="btn_stop">
+            parar setInterval
+        </button>
+
+
+        <script>
+
+            // =========================================================
+            // 1. MOUSEENTER E MOUSELEAVE
+            // =========================================================
+
+            let square = document.querySelector("#square");
+
+
+            // Quando o mouse entra na div
+            square.addEventListener("mouseenter", () => {
+
+                if (square.classList.contains("inactive")) {
+
+                    square.classList.remove("inactive");
+                    square.classList.add("active");
+
+                }
+
+            });
+
+
+            // Quando o mouse sai da div
+            square.addEventListener("mouseleave", () => {
+
+                if (square.classList.contains("active")) {
+
+                    square.classList.remove("active");
+                    square.classList.add("inactive");
+
+                }
+
+            });
+
+
+            // =========================================================
+            // 2. .onclick
+            // =========================================================
+
+            let btn_update = document.querySelector("#btn_update");
+
+
+            btn_update.onclick = () => {
+
+                if (btn_update.dataset.enable === "false") {
+
+                    btn_update.dataset.enable = "true";
+                    btn_update.textContent = "disable";
+
+                    console.log("Botão habilitado");
+
+                } else {
+
+                    btn_update.dataset.enable = "false";
+                    btn_update.textContent = "enable";
+
+                    console.log("Botão desabilitado");
+
+                }
+
+            };
+
+
+            // =========================================================
+            // 3. .addEventListener()
+            // =========================================================
+
+            let btn_timeout = document.querySelector("#btn_timeout");
+
+
+            btn_timeout.addEventListener("click", () => {
+
+                console.log("setTimeout iniciado...");
+
+                setTimeout(() => {
+
+                    console.log("Evento disparado depois de 3 segundos!");
+
+                    btn_update.click();
+
+                }, 3000);
+
+            });
+
+
+            // =========================================================
+            // 4. setInterval()
+            // =========================================================
+
+            let btn_interval = document.querySelector("#btn_interval");
+
+            let intervalo = null;
+
+
+            btn_interval.addEventListener("click", () => {
+
+                // Evita criar vários intervalos
+                if (intervalo !== null) {
+                    return;
+                }
+
+
+                console.log("setInterval iniciado");
+
+
+                intervalo = setInterval(() => {
+
+                    console.log(
+                        "Intervalo executado:",
+                        new Date().toLocaleTimeString()
+                    );
+
+                    // Dispara o evento click programaticamente
+                    btn_update.click();
+
+                }, 2000);
+
+            });
+
+
+            // =========================================================
+            // 5. clearInterval()
+            // =========================================================
+
+            let btn_stop = document.querySelector("#btn_stop");
+
+
+            btn_stop.addEventListener("click", () => {
+
+                if (intervalo !== null) {
+
+                    clearInterval(intervalo);
+
+                    intervalo = null;
+
+                    console.log("setInterval parado");
+
+                }
+
+            });
+        </script>
+
+    	</div>
+	</div>
+
+	<!--
+	/*
+	21 - Demonstre a propagação de eventos no DOM com bubbling e o uso de event.stopPropagation().
+	*/
+	-->
+
+	<div id="21">
+		<style>
+			.container{
+				position: relative;
+				margin-top: 5%;
+				margin-left: 30%;
+			}
+
+			.row1{
+				background-color:blue;
+				border: 2px solid black;
+				width:500px;
+				height:500px;
+				background-color: blue;
+				cursor: pointer;
+			}
+
+			.row2{
+				background-color:red;
+				border: 2px solid black;
+				width:400px;
+				height:400px;
+				background-color: red;
+				cursor: pointer;
+			}
+
+			.row3{
+				background-color:red;
+				border: 2px solid black;
+				width:300px;
+				height:300px;
+				background-color: orange;
+				cursor: pointer;
+			}
+
+			.row4{
+				background-color:red;
+				border: 2px solid black;
+				width:200px;
+				height:200px;
+				background-color: magenta;
+				cursor: pointer;
+			}
+
+		</style>
+
+		<div id="container1" class="container">
+			<div id="row1" class="row1">
+				<div id="row2" class="row2">
+					<div id="row3" class="row3">
+						<div id="row4" class="row4">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="container2" class="container">
+			<div id="row5" class="row1">
+				<div id="row6" class="row2">
+					<div id="row7" class="row3">
+						<div id="row8" class="row4">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			
+			let rows1 = ["#row1", "#row2", "#row3", "#row4"];
+			for(let row of rows1){
+				let r = document.querySelector(row);
+				r.addEventListener("click", () => {
+					console.log(`${row} fired!`);
+				});
+			}
+
+			// evitando a propagação de eventos (bubbling):
+
+			let rows2 = ["#row5", "#row6", "#row7", "#row8"];
+			for(let row of rows2){
+				let r = document.querySelector(row);
+				r.addEventListener("click", (event) => {
+					console.log(`${row} fired!`);
+					event.stopPropagation();
+				});
+			}
+
+		</script>
+	</div>
+
+	<!--
+	/*
+	22 - Demonstre o gerenciamento de eventos de foco (focusin, focusout e focus),
+	e o carregamento dinâmico de rotinas e ouvintes utilizando mouseenter e
+	removeEventListener()
+	*/
+	-->
+
+	<div id="22">
+
+	    <style>
+
+	        #div-22 {
+	            width: 500px;
+	            padding: 30px;
+	            margin: 50px auto;
+	            border: 2px solid black;
+	        }
+
+	        input {
+	            display: block;
+	            width: 300px;
+	            height: 35px;
+	            margin: 10px 0;
+	            padding: 5px;
+	        }
+
+	        .focus {
+	            background-color: lightgreen;
+	            border: 3px solid green;
+	        }
+
+	        .focusin {
+	            background-color: lightblue;
+	        }
+
+	        .focusout {
+	            background-color: lightcoral;
+	        }
+
+	        button {
+	            width: 200px;
+	            height: 40px;
+	            margin-top: 10px;
+	            cursor: pointer;
+	        }
+
+	    </style>
+
+
+    	<div id="div-22">
+
+	        <h2>Eventos de Foco</h2>
+
+	        <input
+	            type="text"
+	            id="input1"
+	            placeholder="Digite alguma coisa..."
+	        >
+
+	        <input
+	            type="text"
+	            id="input2"
+	            placeholder="Outro campo..."
+	        >
+
+	        <button type="button" id="btn-remove">
+	            Remover eventos
+	        </button>
+
+	        <p id="message">
+	            Passe o mouse sobre o primeiro campo.
+	        </p>
+
+	    	</div>
+
+
+    	<script>
+
+	        // =========================================================
+	        // 1. SELECIONANDO OS ELEMENTOS
+	        // =========================================================
+
+	        let input1 = document.querySelector("#input1");
+	        let input2 = document.querySelector("#input2");
+	        let btnRemove = document.querySelector("#btn-remove");
+	        let message = document.querySelector("#message");
+
+
+	        // =========================================================
+	        // 2. EVENTO FOCUS
+	        // =========================================================
+	        // focus dispara quando o elemento recebe foco.
+	        // =========================================================
+
+	        function eventoFocus(event) {
+
+	            console.log("FOCUS:", event.target.id);
+
+	            event.target.classList.add("focus");
+
+	            message.textContent =
+	                `${event.target.id} recebeu foco.`;
+
+	        }
+
+
+	        // =========================================================
+	        // 3. EVENTO FOCUSIN
+	        // =========================================================
+	        // focusin também ocorre quando o elemento recebe foco
+	        // e possui propagação (bubbling).
+	        // =========================================================
+
+	        function eventoFocusin(event) {
+
+	            console.log("FOCUSIN:", event.target.id);
+
+	            event.target.classList.add("focusin");
+
+	        }
+
+
+	        // =========================================================
+	        // 4. EVENTO FOCUSOUT
+	        // =========================================================
+	        // focusout ocorre quando o elemento perde o foco.
+	        // =========================================================
+
+	        function eventoFocusout(event) {
+
+	            console.log("FOCUSOUT:", event.target.id);
+
+	            event.target.classList.remove("focus");
+	            event.target.classList.remove("focusin");
+	            event.target.classList.add("focusout");
+
+	            message.textContent =
+	                `${event.target.id} perdeu o foco.`;
+
+	        }
+
+
+	        // =========================================================
+	        // 5. REGISTRANDO OS EVENTOS DE FOCO
+	        // =========================================================
+
+	        input1.addEventListener("focus", eventoFocus);
+	        input1.addEventListener("focusin", eventoFocusin);
+	        input1.addEventListener("focusout", eventoFocusout);
+
+	        input2.addEventListener("focus", eventoFocus);
+	        input2.addEventListener("focusin", eventoFocusin);
+	        input2.addEventListener("focusout", eventoFocusout);
+
+
+	        // =========================================================
+	        // 6. MOUSEENTER
+	        // =========================================================
+	        // Quando o mouse entra no primeiro input, carregamos
+	        // dinamicamente uma rotina de evento.
+	        // =========================================================
+
+	        function carregarRotina() {
+
+	            console.log("Rotina carregada pelo mouseenter.");
+
+	            input1.addEventListener("focus", rotinaDinamica);
+
+	            message.textContent =
+	                "Rotina de foco carregada dinamicamente.";
+
+	        }
+
+
+	        // =========================================================
+	        // 7. ROTINA DINÂMICA
+	        // =========================================================
+
+	        function rotinaDinamica() {
+
+	            console.log(
+	                "Evento de foco da rotina dinâmica executado!"
+	            );
+
+	        }
+
+
+	        // =========================================================
+	        // 8. MOUSEENTER CARREGA A ROTINA
+	        // =========================================================
+
+	        input1.addEventListener("mouseenter", carregarRotina);
+
+
+	        // =========================================================
+	        // 9. REMOVENDO EVENTOS
+	        // =========================================================
+
+	        btnRemove.addEventListener("click", () => {
+
+	            input1.removeEventListener("focus", eventoFocus);
+	            input1.removeEventListener("focusin", eventoFocusin);
+	            input1.removeEventListener("focusout", eventoFocusout);
+
+	            input2.removeEventListener("focus", eventoFocus);
+	            input2.removeEventListener("focusin", eventoFocusin);
+	            input2.removeEventListener("focusout", eventoFocusout);
+
+	            input1.removeEventListener("mouseenter", carregarRotina);
+
+	            input1.removeEventListener("focus", rotinaDinamica);
+
+	            console.log("Eventos removidos!");
+
+	            message.textContent =
+	                "Eventos de foco removidos.";
+
+	        });
+	    </script>
+
+	</div>
+
+	<!--
+	/*
+	23 - Crie um programa em JavaScript que demonstre o uso de módulos em Node.js, 
+	abrangendo a diferença conceitual e prática entre CommonJS (module.exports e require) 
+	dentro da função e ECMAScript Modules (export e import restrito 
+	ao escopo global), além de destacar as boas práticas de extensão (.js vs .mjs).
+	*/
+	-->
+
+	<div id="23">
+
+		<!-- DESNECESSÁRIO:
+
+			<script src="./module.js" type="module"></script>
+		-->
+		<script type="module">
+
+			/*
+				Hoje, import / export (ES Modules / ESM) é o padrão moderno de módulos JavaScript.
+			*/
+			
+			import {greeting, sum} from "./module.js";
+
+			console.log(greeting("Anderson"));
+
+			console.log(sum(10,3));
+
+		</script>
+	</div>
+
+	<!--
+	/*
+	24 - Crie uma função que demonstre o carregamento de 
+	Módulos ECMAScript (ESM) no navegador, abordando restrições de CORS 
+	ao usar o protocolo file://, a necessidade de um 
+	servidor local (http:// ou https://), o uso obrigatório do atributo 
+	type="module", o isolamento de escopo e boas práticas de extensão e 
+	gerenciamento de cache.
+	*/
+	-->
+	
+	<div id="24">
+	    <script type="module">
+
+	        /*
+	            24 - Módulos ECMAScript (ESM) no navegador
+
+	            - type="module" é obrigatório para usar import/export.
+	            - Módulos possuem escopo próprio.
+	            - Ao usar file://, o navegador pode bloquear os módulos
+	              devido às políticas de segurança/CORS.
+	            - Use um servidor local HTTP/HTTPS.
+	            - O cache pode ser controlado durante o desenvolvimento
+	              usando DevTools ou alterando a URL do módulo.
+	        */
+
+	        import { greeting, sum } from "./module.js";
+
+	        console.log(greeting("Anderson"));
+	        console.log(sum(10, 3));
+
+	        // O módulo possui seu próprio escopo.
+	        // Variáveis declaradas em module.js não ficam disponíveis
+	        // diretamente neste script.
+
+	        
+	    </script>
+	</div>
+
+	<!--
+	/*
+	25 - Demonstre requisições HTTP assíncronas no 
+	navegador através de três rotinas: a API tradicional XMLHttpRequest, 
+	a moderna API Fetch baseada em Promises, e a 
+	abordagem com Async/Await, abordando métodos GET/POST, 
+	prevenção de cache, tratamento de erros e restrições de ambiente 
+	(como a ausência nativa do XMLHttpRequest no Node.js).
+	*/
+	-->
+
+	<div id="25">
+
+		<style>
+			body{
+				font-family: arial;
+			}
+
+			h1{
+				position: relative;
+				margin-left: 30%;
+			}
+
+			table{
+				position: relative;
+				margin-left: 30%;
+				border: 2px solid black;
+			}
+
+			thead{
+				font-weight:bold;
+			}
+
+			.td-id{
+				width:100px;
+				border: 2px solid black;
+			}
+
+			.td-name{
+				width:500px;
+				border: 2px solid black;
+			}
+
+
+			button{
+				width:120px;
+				height: 40px;
+				cursor: pointer;
+				color: white;
+			}
+
+			.request-option {
+			    cursor: pointer;
+			}
+
+			body{
+				background-color: #E8F6FA;
+			}
+		
+		</style>
+
+		<div id="container">
+			<div style="text-align:right;">
+				<br>
+				<div id="div-request"> 
+					<label class="request-option" for="rdXMLHttp">
+					    <input type="radio" name="request" id="rdXMLHttp" value="xmlhttp" checked onclick="request_xmlhttprequest()">
+					    XMLHttpRequest
+					</label>
+
+					<label class="request-option" for="rdFetchAPI">
+					    <input type="radio" name="request" id="rdFetchAPI" value="fetch" onclick="request_fetch_api()">
+					    Fetch API
+					</label>
+
+					<label class="request-option" for="rdAsyncAPI">
+					    <input type="radio" name="request" id="rdAsyncAPI" value="async" onclick="request_async_fetch()">
+					    Async Fetch
+					</label>
+				</div>
+				<br>
+				<button type="button" id="btnGet" style="background-color:blue;">GET</button><button type="button" id="btnPost" style="background-color:brown;">POST</button>
+			</div>
+			<h1>Listing</h1>
+			<table>
+				<thead>
+					<tr>
+						<th class="td-id">ID</th>
+						<th class="td-name">Name</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		
+		<script type="text/javascript">
+
+			function set_people_to_table(people){
+				let tbody = document.querySelector("tbody");
+				for(let p of people){
+					let tr = document.createElement("tr");
+					let td1 = document.createElement("td");
+					td1.textContent = p.id;
+					let td2 = document.createElement("td");
+					td2.textContent = p.name;
+					tr.appendChild(td1);
+					tr.appendChild(td2);
+					tbody.appendChild(tr);
+				}
+			}
+
+			function request_xmlhttprequest(){
+
+				console.log("request_xmlhttprequest");
+
+				let xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function(){
+					if(xmlhttp.readyState === 4){
+						if(xmlhttp.status === 200){
+							let people = JSON.parse(xmlhttp.responseText);
+            				set_people_to_table(people);
+						}
+					}
+				}
+
+				xmlhttp.timeout = 5000;
+				xmlhttp.onerror = () => console.log("XMLHttpRequest error.");
+				xmlhttp.ontimeout = () => console.log("timeout error.");
+
+				function handleGet(){
+					btnGet.addEventListener("click", () => {
+						console.log("GET: ");
+						xmlhttp.open("GET", "http://127.0.0.1/html-js/people.json");
+						xmlhttp.send();
+					});
+				}
+				let btnGet = document.querySelector("#btnGet");
+				btnGet.removeEventListener("click", handleGet);
+				btnGet.addEventListener("click", handleGet);
+
+				function handlePost(){
+					console.log("POST: ");
+					xmlhttp.open("POST", "http://127.0.0.1/html-js/people.json");
+					xmlhttp.setRequestHeader("Content-type", "application/json");
+					xmlhttp.send(JSON.stringify({
+						id: 11,
+						name: "Vanessa"
+					}));
+				}
+				let btnPost = document.querySelector("#btnPost");
+				btnPost.removeEventListener("click", handlePost);
+				btnPost.addEventListener("click", handlePost);
+			}
+
+			function request_fetch_api(){
+
+				console.log("request_fetch_api");
+
+				function get(){
+
+					console.log("GET:\n");
+
+					fetch("http://127.0.0.1/html-js/people.json", {
+						method: "GET",
+					}).then((response) => {
+						if(!response.ok){
+							throw new Error(`fetching error: ${response.status}`);
+						}else{
+							return response.json();
+						}
+					}).then((response) => {
+						set_people_to_table(response);
+					}).catch((error) => {
+						console.log(error);
+					});
+				}
+
+				function post(){
+
+					console.log("POST:\n");
+
+					fetch("http://127.0.0.1/html-js/people.json", {
+						method: "POST",
+						body: JSON.stringify({
+							id: 11,
+							name: "Vanessa"
+						}),
+						headers: {"Content-type": "application/json"}
+					}).then((response) => {
+						if(!response.ok){
+							throw new Error(`fetching error: ${response.status}`);
+						}else{
+							return response.json();
+						}
+					}).then((response) => {
+						set_people_to_table(response);
+					}).catch((error) => {
+						console.log(error);
+					});
+				}
+
+				function handlerGet() {
+				    get();
+				}
+
+				function handlerPost() {
+				    post();
+				}
+
+				let btnGet = document.querySelector("#btnGet");
+				btnGet.removeEventListener("click", handlerGet);
+				btnGet.addEventListener("click", handlerGet);
+
+				let btnPost = document.querySelector("#btnPost");
+				btnPost.removeEventListener("click", handlerPost);
+				btnGet.addEventListener("click", handlerPost);
+			}
+
+			function request_async_fetch(){
+
+				console.log("request_async_fetch");
+
+				async function get(){
+
+					console.log("GET:\n");
+
+					let response = await fetch("http://127.0.0.1/html-js/people.json");
+
+					if(!response.ok){
+						throw new Error(`fetching error: ${response.status}`);
+					}
+					
+					let people = await response.json();
+					set_people_to_table(people);
+				}
+
+				//
+				async function post(){
+
+					console.log("POST:\n");
+
+					let response = await fetch("http://127.0.0.1/html-js/people.json", {
+						method: "POST",
+						body: JSON.stringify({
+							id: 10, name: "Vanessa"
+						}),
+						headers: {"Content-type": "application/json"},
+					});
+
+					if(!response.ok){
+						throw new Error(`fetching error: ${response.status}`);
+					}
+					
+					let people = await response.json();
+					set_people_to_table(people);
+				}
+
+				function handlerGet() {
+				    get();
+				}
+
+				function handlerPost() {
+				    post();
+				}
+				
+				let btnGet = document.querySelector("#btnGet");
+				btnGet.removeEventListener("click", handlerGet);
+				btnGet.addEventListener("click", handlerGet);
+
+				let btnPost = document.querySelector("#btnPost");
+				btnPost.removeEventListener("click", handlerPost);
+				btnGet.addEventListener("click", handlerPost);
+			}
+
+			// window.onload = request_xmlhttprequest();
+
+			window.onload = request_xmlhttprequest;
+
+		</script>
+	</div>
+
+
+	<script>
+		let divs_exercises = ["15","16","17","18","19","20","21","22","23","24"];
+		for(let div of divs_exercises){
+			document.getElementById(div).remove();
+		}
+	</script>
+
+</body>
+</html>

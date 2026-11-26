@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>20.html</title>
+
+
+	<style>
+		.active{
+			background-color: green;
+			border: 4px solid yellow;
+			width:500px;
+			height:500px;
+		}
+
+		.inactive{
+			background-color: red;
+			border: 2px solid black;
+			width:250px;
+			height:250px;
+		}
+
+
+		.btn-date{
+			width:300px;
+			height:40px;
+			cursor: pointer;
+			color: white;
+			background-color:blue;
+		}
+
+	</style>
+</head>
+<body>
+	<!--
+		/*
+			20 - Demonstre a manipulação de eventos no 
+			DOM comparando a propriedade .onclick com o método .addEventListener(), 
+			implemente eventos de mouse (mouseenter e mouseleave) para alternar classes 
+			de estado em um elemento (.inactive e .active), controle estados dinâmicos 
+			em botões, e utilize temporizadores (setTimeout e setInterval) para disparar 
+			eventos de forma programática.
+		*/
+	-->
+
+	<div id="div-button"></div>
+	<br><br>
+	<div id="square"></div>
+
+	<script>
+
+		let square = document.querySelector("#square");
+
+		window.addEventListener("load", (e) => {
+			square.classList.add("inactive");
+			square.style.cursor = "text";
+		});
+
+		square.addEventListener("mouseenter", (e) => {
+			e.target.classList.remove("inactive");
+			e.target.classList.add("active");
+		});
+
+		square.addEventListener("mouseleave", (e) => {
+			e.target.classList.remove("active");
+			e.target.classList.add("inactive");
+		});
+
+
+		let div = document.querySelector("#div-button");
+		div.style.textAlign = "right";
+
+		let button = document.createElement("button");
+		button.setAttribute("id", "btndate");
+		button.classList.add("btn-date");
+		button.innerHTML = "Show Date!";
+		div.appendChild(button);
+
+		let enable = false;
+
+		let interval = null; // necessario usar isso para travar o interval.
+
+		function date_function(e){
+			if(enable){
+
+				// necessario atribuir para limpa-lo.
+				interval = setInterval(() => {
+					e.target.innerHTML = new Date().toLocaleString();
+				}, 1000);
+			}else{
+				e.target.innerHTML = "Show Date!";
+			}
+		}
+
+		button.addEventListener("click", (e) => {
+			enable = !enable;
+			clearInterval(interval); // limpando o interval.
+			date_function(e);
+		});
+		
+	</script>
+</body>
+</html>

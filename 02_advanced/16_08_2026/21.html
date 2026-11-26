@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>21.html</title>
+
+	<style>
+		button{
+			width: 130px;
+			height: 40px;
+			cursor: pointer;
+		}
+		
+		.btnParent{
+			color: white;
+			background-color: red;
+		}
+
+		.btnChild{
+			color: white;
+			background-color: blue;
+		}
+
+		input[type=radio]{
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="container">
+		<div id="parent">
+			<br>
+			<button type="button" id="btnParent" class="btnParent">PARENT</button>
+			<div id="child">
+				<br>
+				<button type="button" id="btnChild" class="btnChild">CHILD</button>
+				<input type="checkbox" id="chkActive" name="chkActive">
+				<label for="chkActive" style="cursor:pointer;">Stop Propagation</label>
+			</div>
+		</div>
+	</div>
+
+	<div style="text-align:right;">
+	    <hr>
+	    <input type="radio" id="rdpropagation" name="radios" checked>
+	    <label for="rdpropagation" style="cursor:pointer;">Propagation</label>
+	    
+	    <input type="radio" id="rdfocus" name="radios">
+	    <label for="rdfocus" style="cursor:pointer;">Focus</label>
+	</div>
+
+	<script>
+		let propagation = true;
+		let stop_propagation = false;
+
+		let parent = document.querySelector("#parent");
+		let child = document.querySelector("#child");
+		let btnParent = document.querySelector("#btnParent");
+		let btnChild = document.querySelector("#btnChild");
+		let chkActive = document.querySelector("#chkActive");
+
+		// Funções de manipuladores nomeadas para permitir o removeEventListener correto
+		function handleParentClick(e) {
+			console.log("parent!");
+		}
+
+		function handleChildClick(e) {
+			console.log("child!");
+		}
+
+		function handleBtnParentClick(e) {
+			parent.dispatchEvent(new Event("click", { bubbles: true }));
+		}
+
+		function handleBtnChildClick(e) {
+			child.dispatchEvent(new Event("click", { bubbles: true }));
+			if (stop_propagation) {
+				e.stopPropagation();
+			}
+		}
+
+		function handleChkClick(e) {
+			stop_propagation = e.target.checked;
+		}
+
+		function exercise_21() {
+			chkActive.style.cursor = "pointer";
+
+			if (propagation) {
+				parent.addEventListener("click", handleParentClick);
+				child.addEventListener("click", handleChildClick);
+				btnParent.addEventListener("click", handleBtnParentClick);
+				btnChild.addEventListener("click", handleBtnChildClick);
+				chkActive.addEventListener("click", handleChkClick);
+			} else {
+				parent.removeEventListener("click", handleParentClick);
+				child.removeEventListener("click", handleChildClick);
+				btnParent.removeEventListener("click", handleBtnParentClick);
+				btnChild.removeEventListener("click", handleBtnChildClick);
+				chkActive.removeEventListener("click", handleChkClick);
+			}
+		}
+
+		// Inicializa o exercício
+		exercise_21();
+
+		let radios = document.querySelectorAll("input[type=radio]");
+		
+		radios[0].addEventListener("click", function(e) {
+		    propagation = true;
+		    exercise_21();
+		});
+
+		radios[1].addEventListener("click", function(e) {
+		    propagation = false;
+		    exercise_21();
+		});
+	</script>
+</body>
+</html>

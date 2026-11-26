@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>16</title>
+	<style>
+		p{
+			font-size:25px;
+		}
+
+		input[type=text]{
+			font-size:18px;
+			width:350px;
+		}
+
+		table{
+			margin-top:10%;
+			margin-left:35%;
+			position:relative;
+		}
+
+		/*
+		button{
+			width:100px;
+			height:30px;
+			cursor:pointer;
+			color:white;
+		}
+		*/
+
+		.btn-submit{
+			background-color:green;
+		}
+
+		.btn-reset{
+			background-color:gray;
+		}
+
+		html{
+			font-family:arial;
+		}
+
+		.text-enter{
+			background-color:#FCFCC5;
+			color:red;
+		}
+
+		.text-leave{
+			background-color:gray;
+			color:black;
+		}
+
+	</style>
+</head>
+<body>
+	<!--
+		16 - Demonstre a manipulação avançada do DOM e formulários, utilizando querySelector e querySelectorAll, alterando estilos e propriedades de botões, manipulando classes CSS (add, remove, contains, toggle, className), iterando sobre NodeList com for...of, e associando eventos como o onclick.
+	-->
+
+	<div id="container">
+		<form id="frmperson">
+			<table>
+				<tr>
+					<td><label for="id">ID</label></td>
+				</tr>
+				<tr>
+					<td><input type="text" name="id" id="id" class="text-leave"></td>
+				</tr>
+				<tr>
+					<td><label for="name">Name</label></td>
+				</tr>
+				<tr>
+					<td><input type="text" name="name" id="name" class="text-leave"></td>
+				</tr>
+				<tr>
+					<td align="right">
+						<div>
+							<button type="reset">button01</button>
+							<button type="submit">button02</button>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<script>
+
+		function validation(){
+			let txts = document.querySelectorAll("input[type=text]");
+			for(let txt of txts){
+				if(txt.value === ""){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		let buttons = document.querySelectorAll("button");
+		for(let b of buttons){
+			b.style = "width:100px;height:30px;cursor:pointer;color:white;";
+		}
+
+		let form = document.querySelector("form");
+		console.log(form);
+		form.setAttribute("method", "POST");
+		form.setAttribute("enctype", "multipart/form-data");
+		//form.setAttribute("action", "people.json");
+
+		let btn_submit = document.querySelector("button[type=submit]");
+		btn_submit.classList.add("btn-submit");
+		btn_submit.textContent = "SUBMIT";
+
+		let btn_reset = document.querySelector("button[type=reset]");
+		btn_reset.classList.add("btn-reset");
+		btn_reset.textContent = "RESET";
+
+		let txts = document.querySelectorAll("input[type=text]");
+
+		let opc = true;
+		
+		if(opc){
+			for(let txt of txts){
+				txt.addEventListener("focusin", (e) => {
+					e.target.classList.toggle("text-leave");
+			    	e.target.classList.toggle("text-enter");
+
+			    	if(e.target.classList.contains("text-enter")){
+			    		console.log(`${e.target.name} active.`);
+			    	}else{
+			    		console.log(`${e.target.name} inactive.`);
+			    	}
+				});
+
+				txt.addEventListener("focusout", (e) => {
+					e.target.classList.toggle("text-enter");
+					e.target.classList.toggle("text-leave");
+
+					if(e.target.classList.contains("text-enter")){
+			    		console.log(`${e.target.name} active.`);
+			    	}else{
+			    		console.log(`${e.target.name} inactive.`);
+			    	}
+				});
+			}
+		}else{
+			for(let txt of txts){
+				txt.addEventListener("focusin", (e) => {
+					e.target.classList.remove("text-leave");
+			    	e.target.classList.add("text-enter");
+
+			    	if(e.target.classList.contains("text-enter")){
+			    		console.log(`${e.target.name} active.`);
+			    	}else{
+			    		console.log(`${e.target.name} inactive.`);
+			    	}
+				});
+
+				txt.addEventListener("focusout", (e) => {
+					e.target.classList.remove("text-enter");
+					e.target.classList.add("text-leave");
+
+					if(e.target.classList.contains("text-enter")){
+			    		console.log(`${e.target.name} active.`);
+			    	}else{
+			    		console.log(`${e.target.name} inactive.`);
+			    	}
+				});
+			}
+		}
+		
+		window.addEventListener("load", () => {
+			let txtid = document.querySelector("#id");
+			txtid.dispatchEvent(new Event("focusin"));
+		});
+
+		/*
+			Atualmente você está escutando o evento click no botão de submit (btn_submit.addEventListener("click", ...)). O mais recomendado em formulários é escutar o evento submit diretamente no formulário (form.addEventListener("submit", ...)) para capturar envios tanto por clique quanto por pressionar a tecla Enter.
+		*/
+
+		/*
+		btn_submit.addEventListener("click", (e) => {
+			if(validation()){
+				alert("Successfully created.");
+			}else{
+				alert("Existem um mais campos vazios.");
+				e.preventDefault();
+			}
+		});
+		*/
+
+		form.addEventListener("submit", (e) => {
+			if(validation()){
+				alert("Successfully created.");
+			}else{
+				alert("Existem um mais campos vazios.");
+				e.preventDefault();
+			}
+		});
+
+		btn_reset.addEventListener("click", (e) => {
+			alert("Cleaned!");
+		});
+			
+	</script>
+</body>
+</html>

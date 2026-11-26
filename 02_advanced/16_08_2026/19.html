@@ -1,0 +1,125 @@
+/*
+			19 - Demonstre o uso de Data Attributes 
+			(data-*) e da propriedade .dataset no DOM, criando atributos personalizados 
+			via .setAttribute(), lendo-os via notação de ponto, e iterando sobre suas 
+			chaves e valores com Object.entries() e Object.values().
+		*/
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>19.html</title>
+
+	<style>
+		input[type=text]{
+			width:500px;
+			font-size: 18px;
+		}
+
+		label{
+			font-weight: bold;
+		}
+
+		.text-focusin{
+			background-color:#FCFCDC;
+			color:red;
+			border: 4px solid red;
+		}
+
+		.text-focusout{
+			background-color:#CCCCCC;
+			color:black;
+			border: 2px solid black;
+		}
+
+		table{
+			margin-top:10%;
+			margin-left:32%;
+			position:relative;
+		}
+
+		button{
+			width:120px;
+			height:30px;
+			color:white;
+			cursor:pointer;
+		}
+
+		.tr-button{
+			text-align:right;
+		}
+
+		.btn-submit{
+			background-color: green;
+		}
+
+		.btn-reset{
+			background-color: gray;
+		}
+
+	</style>
+</head>
+<body>
+	<!--
+		/*
+			19 - Demonstre o uso de Data Attributes 
+			(data-*) e da propriedade .dataset no DOM, criando atributos personalizados 
+			via .setAttribute(), lendo-os via notação de ponto, e iterando sobre suas 
+			chaves e valores com Object.entries() e Object.values().
+		*/
+	-->
+
+	<div id="container">
+		<form>
+			<table>
+				<tr>
+					<td><label for="id">ID</label></td>
+				</tr>
+				<tr>
+					<td><input type="text" name="txtid" id="txtid" class="text-focusout" data-id="id-dataset-1"></td>
+				</tr>
+				<tr>
+					<td><label for="name">Name</label></td>
+				</tr>
+				<tr>
+					<td><input type="text" name="txtname" id="txtname" class="text-focusout" data-id="id-dataset-2"></td>
+				</tr>
+				<tr>
+					<td><hr></td>
+				</tr>
+				<tr>
+					<td class="tr-button"><button type="reset" class="btn-reset">Clear</button><button type="submit" class="btn-submit">Send</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<script>
+
+		let i = 1;
+
+		let txts = document.querySelectorAll("input[type=text]");
+
+		for(let txt of txts){
+			txt.setAttribute("data-name", `name-dataset-${i}`);
+			i++;
+		}
+
+		for(let txt of txts){
+			console.log(`[id: ${txt.name}]: data-id: ${txt.dataset.id}, data-name: ${txt.dataset.name}`);
+
+			for(let[k,v] of Object.entries(txt.dataset)){
+				console.log(`--- Key: ${k}: ${v}`);
+			}
+
+			for(let v of Object.values(txt.dataset)){
+				console.log(`------ Value: ${v}`);
+			}
+
+			console.log("\n");
+		}
+	</script>
+</body>
+</html>
